@@ -1,0 +1,72 @@
+# General settings for the Job Radar.
+
+candidate:
+  available_from: "2027-02-01"
+  experience_years: 4.6
+  target_experience_range: [3, 6]
+
+locations:
+  # A job is kept if its location text matches any of these (case-insensitive), or if it is remote
+  # and open to India.
+  include:
+    - india
+    - mumbai
+    - navi mumbai
+    - thane
+    - bengaluru
+    - bangalore
+    - delhi
+    - new delhi
+    - ncr
+    - gurugram
+    - gurgaon
+    - noida
+    - hyderabad
+    - pune
+    - chennai
+  remote_terms: [remote, work from home, wfh, anywhere]
+
+# Search terms used on LinkedIn / aggregators to discover roles at companies NOT on the list.
+discovery_queries:
+  - strategy manager
+  - founder's office
+  - chief of staff
+  - business strategy
+  - corporate strategy
+  - strategy and operations
+  - program manager strategy
+  - growth strategy
+  - business operations manager
+  - management consultant
+  - strategy consultant
+  - life sciences consultant
+  - commercial excellence pharma
+  - sales force effectiveness
+  - incentive compensation consultant
+  - pricing strategy manager
+  - category manager quick commerce
+
+# "India" already covers every metro; add cities only if you want deeper results (more requests).
+discovery_locations:
+  - India
+
+sources:
+  ats: true                 # Greenhouse / Lever / Ashby / SmartRecruiters / Workday feeds
+  linkedin: true            # LinkedIn public (logged-out) job search. Set false to turn off.
+  linkedin_company_slice: 30   # companies searched by name per run (rotates through the list)
+  adzuna: true              # needs ADZUNA_APP_ID / ADZUNA_APP_KEY secrets (free tier); skipped if missing
+  serpapi: true             # Google Jobs via SerpAPI; needs SERPAPI_KEY; skipped if missing
+  serpapi_queries_per_run: 1   # free tier = 100 searches/month → keep this at 1 for twice-daily runs
+  max_age_days: 7           # ignore postings older than this
+
+scoring:
+  model: claude-opus-5-5    # override with the CLAUDE_MODEL env var (e.g. claude-haiku-5-5 is ~40x cheaper)
+  effort: low
+  batch_size: 10            # jobs per Claude call
+  max_jobs_per_run: 250     # safety cap on cost
+  high_fit: 8               # 🔥 — goes in the email
+  good_fit: 6               # ⭐ — goes to All Jobs; below this → 🗂 Others tab
+
+email:
+  min_score: 7
+  max_items: 25

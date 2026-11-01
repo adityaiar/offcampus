@@ -1,0 +1,151 @@
+# Seed company list (all with India presence). After the first run this list is copied to the
+# "🏢 Companies" tab of the Google Sheet, which becomes the source of truth — add/remove rows there.
+#
+# Fields
+#   name     : display name (also used as the LinkedIn search term)
+#   bucket   : consulting | lifesciences | startup
+#   ats      : optional "greenhouse:<slug>" | "lever:<slug>" | "ashby:<slug>" |
+#              "smartrecruiters:<slug>" | "workday:<host>/<tenant>/<site>"
+#              Leave blank and the radar auto-probes Greenhouse/Lever/Ashby/SmartRecruiters and caches
+#              what it finds. Companies with no public ATS feed are covered via LinkedIn search.
+#   tags     : optional — "boomerang" (ex-employer), "dream" (always pinned to top), sector hints
+#
+# Workday entries are best-known URLs; any that stop working show up in the "🧾 Run Log" tab.
+
+companies:
+  # ───────────── Former employers (🔁 boomerang) ─────────────
+  - {name: ZS Associates, bucket: lifesciences, tags: [boomerang]}
+  - {name: Blinkit, bucket: startup, tags: [boomerang, quick-commerce]}
+  - {name: Eternal, bucket: startup, tags: [boomerang, quick-commerce]}
+  - {name: Zupee, bucket: startup, tags: [boomerang, gaming]}
+  - {name: Virohan, bucket: startup, tags: [boomerang, edtech]}
+
+  # ───────────── Consulting / Strategy ─────────────
+  - {name: McKinsey & Company, bucket: consulting}
+  - {name: Boston Consulting Group, bucket: consulting}
+  - {name: Bain & Company, bucket: consulting}
+  - {name: Kearney, bucket: consulting}
+  - {name: Roland Berger, bucket: consulting}
+  - {name: Oliver Wyman, bucket: consulting}
+  - {name: L.E.K. Consulting, bucket: consulting}
+  - {name: Arthur D. Little, bucket: consulting}
+  - {name: Alvarez & Marsal, bucket: consulting}
+  - {name: Strategy& (PwC), bucket: consulting}
+  - {name: PwC India, bucket: consulting}
+  - {name: EY-Parthenon, bucket: consulting}
+  - {name: Deloitte India, bucket: consulting}
+  - {name: KPMG India, bucket: consulting}
+  - {name: Accenture Strategy, bucket: consulting}
+  - {name: Grant Thornton Bharat, bucket: consulting}
+  - {name: Redseer Strategy Consultants, bucket: consulting}
+  - {name: Praxis Global Alliance, bucket: consulting}
+  - {name: 1Lattice, bucket: consulting}
+  - {name: Technopak, bucket: consulting}
+  - {name: Avalon Consulting, bucket: consulting}
+  - {name: Primus Partners, bucket: consulting}
+  - {name: Nexdigm, bucket: consulting}
+  - {name: Zinnov, bucket: consulting}
+  - {name: Everest Group, bucket: consulting}
+  - {name: Bain Capability Network, bucket: consulting}
+  - {name: BCG X, bucket: consulting}
+  - {name: Reliance Industries, bucket: consulting, tags: [corporate-strategy]}
+  - {name: Tata Sons, bucket: consulting, tags: [corporate-strategy]}
+  - {name: Aditya Birla Group, bucket: consulting, tags: [corporate-strategy]}
+  - {name: Mahindra Group, bucket: consulting, tags: [corporate-strategy]}
+
+  # ───────────── Life-science consulting & pharma ─────────────
+  - {name: IQVIA, bucket: lifesciences, ats: "workday:iqvia.wd1.myworkdayjobs.com/iqvia/IQVIA"}
+  - {name: Axtria, bucket: lifesciences}
+  - {name: Indegene, bucket: lifesciences}
+  - {name: Clarivate, bucket: lifesciences, ats: "workday:clarivate.wd3.myworkdayjobs.com/clarivate/Clarivate_Careers"}
+  - {name: Putnam (Inizio), bucket: lifesciences}
+  - {name: Inizio, bucket: lifesciences}
+  - {name: Trinity Life Sciences, bucket: lifesciences}
+  - {name: Beghou Consulting, bucket: lifesciences}
+  - {name: EVERSANA, bucket: lifesciences}
+  - {name: Definitive Healthcare, bucket: lifesciences}
+  - {name: Evalueserve, bucket: lifesciences}
+  - {name: Course5 Intelligence, bucket: lifesciences}
+  - {name: Syneos Health, bucket: lifesciences}
+  - {name: Novartis, bucket: lifesciences, tags: [pharma], ats: "workday:novartis.wd3.myworkdayjobs.com/novartis/Novartis_Careers"}
+  - {name: Sanofi, bucket: lifesciences, tags: [pharma]}
+  - {name: AstraZeneca, bucket: lifesciences, tags: [pharma], ats: "workday:astrazeneca.wd3.myworkdayjobs.com/astrazeneca/Careers"}
+  - {name: Pfizer, bucket: lifesciences, tags: [pharma], ats: "workday:pfizer.wd1.myworkdayjobs.com/pfizer/PfizerCareers"}
+  - {name: GSK, bucket: lifesciences, tags: [pharma], ats: "workday:gsk.wd5.myworkdayjobs.com/gsk/GSKCareers"}
+  - {name: Bristol Myers Squibb, bucket: lifesciences, tags: [pharma], ats: "workday:bristolmyerssquibb.wd5.myworkdayjobs.com/bristolmyerssquibb/BMS"}
+  - {name: Eli Lilly, bucket: lifesciences, tags: [pharma]}
+  - {name: Amgen, bucket: lifesciences, tags: [pharma], ats: "workday:amgen.wd1.myworkdayjobs.com/amgen/Careers"}
+  - {name: MSD, bucket: lifesciences, tags: [pharma]}
+  - {name: Sun Pharma, bucket: lifesciences, tags: [pharma]}
+  - {name: Cipla, bucket: lifesciences, tags: [pharma]}
+  - {name: Dr. Reddy's Laboratories, bucket: lifesciences, tags: [pharma]}
+  - {name: Lupin, bucket: lifesciences, tags: [pharma]}
+  - {name: Zydus Lifesciences, bucket: lifesciences, tags: [pharma]}
+  - {name: Glenmark, bucket: lifesciences, tags: [pharma]}
+  - {name: Mankind Pharma, bucket: lifesciences, tags: [pharma]}
+  - {name: Torrent Pharmaceuticals, bucket: lifesciences, tags: [pharma]}
+  - {name: Biocon, bucket: lifesciences, tags: [pharma]}
+
+  # ───────────── Startups (Series B+) ─────────────
+  # Quick commerce / logistics / mobility
+  - {name: Zepto, bucket: startup, tags: [quick-commerce]}
+  - {name: Swiggy, bucket: startup, tags: [quick-commerce]}
+  - {name: Flipkart, bucket: startup, tags: [ecommerce]}
+  - {name: BigBasket, bucket: startup, tags: [quick-commerce]}
+  - {name: Porter, bucket: startup, tags: [logistics]}
+  - {name: Shadowfax, bucket: startup, tags: [logistics]}
+  - {name: Delhivery, bucket: startup, tags: [logistics]}
+  - {name: Rapido, bucket: startup, tags: [mobility]}
+  - {name: Ola, bucket: startup, tags: [mobility]}
+  # Gaming / content
+  - {name: Dream11, bucket: startup, tags: [gaming]}
+  - {name: Games24x7, bucket: startup, tags: [gaming]}
+  - {name: MPL, bucket: startup, tags: [gaming]}
+  - {name: WinZO, bucket: startup, tags: [gaming]}
+  - {name: Pocket FM, bucket: startup, tags: [content]}
+  - {name: Kuku FM, bucket: startup, tags: [content]}
+  - {name: ShareChat, bucket: startup, tags: [content]}
+  # Ed-tech / health-tech
+  - {name: PhysicsWallah, bucket: startup, tags: [edtech]}
+  - {name: upGrad, bucket: startup, tags: [edtech]}
+  - {name: Eruditus, bucket: startup, tags: [edtech]}
+  - {name: Unacademy, bucket: startup, tags: [edtech]}
+  - {name: PharmEasy, bucket: startup, tags: [healthtech]}
+  - {name: Tata 1mg, bucket: startup, tags: [healthtech]}
+  - {name: Practo, bucket: startup, tags: [healthtech]}
+  - {name: Pristyn Care, bucket: startup, tags: [healthtech]}
+  - {name: Innovaccer, bucket: startup, tags: [healthtech]}
+  - {name: HealthifyMe, bucket: startup, tags: [healthtech]}
+  - {name: Cult.fit, bucket: startup, tags: [healthtech]}
+  - {name: Truemeds, bucket: startup, tags: [healthtech]}
+  # Consumer / commerce
+  - {name: Meesho, bucket: startup, tags: [ecommerce]}
+  - {name: Lenskart, bucket: startup, tags: [d2c]}
+  - {name: Nykaa, bucket: startup, tags: [d2c]}
+  - {name: Urban Company, bucket: startup, tags: [consumer]}
+  - {name: Licious, bucket: startup, tags: [d2c]}
+  - {name: Rebel Foods, bucket: startup, tags: [consumer]}
+  - {name: Honasa Consumer, bucket: startup, tags: [d2c]}
+  - {name: boAt, bucket: startup, tags: [d2c]}
+  - {name: Spinny, bucket: startup, tags: [consumer]}
+  - {name: Cars24, bucket: startup, tags: [consumer]}
+  # Fintech
+  - {name: Razorpay, bucket: startup, tags: [fintech]}
+  - {name: CRED, bucket: startup, tags: [fintech]}
+  - {name: Groww, bucket: startup, tags: [fintech]}
+  - {name: PhonePe, bucket: startup, tags: [fintech]}
+  - {name: Jar, bucket: startup, tags: [fintech]}
+  - {name: slice, bucket: startup, tags: [fintech]}
+  - {name: Zerodha, bucket: startup, tags: [fintech]}
+  # B2B / industrial / EV / SaaS
+  - {name: Udaan, bucket: startup, tags: [b2b]}
+  - {name: Zetwerk, bucket: startup, tags: [b2b]}
+  - {name: OfBusiness, bucket: startup, tags: [b2b]}
+  - {name: Infra.Market, bucket: startup, tags: [b2b]}
+  - {name: Jumbotail, bucket: startup, tags: [b2b]}
+  - {name: Ather Energy, bucket: startup, tags: [ev]}
+  - {name: Darwinbox, bucket: startup, tags: [saas]}
+  - {name: Freshworks, bucket: startup, tags: [saas]}
+  - {name: Postman, bucket: startup, tags: [saas]}
+  - {name: Chargebee, bucket: startup, tags: [saas]}
+  - {name: LeadSquared, bucket: startup, tags: [saas]}
