@@ -107,3 +107,11 @@ def test_dry_run_with_fixtures(tmp_path, monkeypatch):
     assert "Associate Director" not in csv_text
     assert csv_text.count("Founder's Office") == 1   # deduped across sources
     assert "Kearney" not in csv_text           # posted too long ago
+
+
+def test_sheet_key_accepts_url_or_id():
+    from jobradar.sheets import sheet_key
+    sid = "1AbC_dEf-123456789012345678901234567890XyZ"
+    assert sheet_key(sid) == sid
+    assert sheet_key(f"https://docs.google.com/spreadsheets/d/{sid}/edit?gid=0#gid=0") == sid
+    assert sheet_key(f" {sid}/edit ") == sid

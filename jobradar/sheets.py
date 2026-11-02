@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 
 import gspread
 
@@ -45,6 +46,15 @@ STATUS_COLORS = {
 }
 
 
+def sheet_key(raw: str) -> str:
+    """Accept either the bare sheet id or a full Google Sheets URL."""
+    raw = (raw or "").strip().strip('"').strip("'")
+    m = re.search(r"/spreadsheets/d/([a-zA-Z0-9_-]+)", raw)
+    if m:
+        return m.group(1)
+    return raw.split("/")[0].split("?")[0].split("#")[0]
+
+
 def esc(v):
     """Stop job titles like '+Growth' or '=Strategy' being parsed as formulas."""
     if isinstance(v, str) and v[:1] in ("=", "+", "-", "@"):
@@ -56,7 +66,17 @@ class Sheet:
     def __init__(self):
         creds = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
         self.gc = gspread.service_account_from_dict(creds)
-        self.sh = self.gc.open_by_key(os.environ["SHEET_ID"])
+        key = sheet_key(os.environ["SHEET_ID"])
+        try:
+            self.sh = self.gc.open_by_key(key)
+        except (gspread.exceptions.APIError, gspread.exceptions.SpreadsheetNotFound) as e:
+            raise SystemExit(
+                f"Could not open the Google Sheet (id starts '{key[:6]}…', {len(key)} chars).\n"
+                f"Check that: (1) SHEET_ID is the id from the URL "
+                f"docs.google.com/spreadsheets/d/<THIS PART>/edit, and (2) the sheet is shared as Editor "
+                f"with the service account {creds.get('client_email', '?')}.\n"
+                f"Also make sure the Google Sheets API and Google Drive API are enabled in the Cloud project.\n"
+                f"Underlying error: {str(e)[:300]}") from None
         self.url = self.sh.url
         self._ensure_tabs()
 
