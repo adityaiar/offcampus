@@ -1,1 +1,462 @@
-{}
+{
+ "1Lattice": {
+  "spec": "",
+  "ts": 1793611570.166819
+ },
+ "Accenture Strategy": {
+  "spec": "",
+  "ts": 1793611563.9560492
+ },
+ "Aditya Birla Group": {
+  "spec": "",
+  "ts": 1793611594.1506996
+ },
+ "Alvarez & Marsal": {
+  "spec": "",
+  "ts": 1793611544.9892354
+ },
+ "Arthur D. Little": {
+  "spec": "",
+  "ts": 1793611541.7880335
+ },
+ "Ather Energy": {
+  "spec": "",
+  "ts": 1793611876.555151
+ },
+ "Avalon Consulting": {
+  "spec": "",
+  "ts": 1793611575.3977473
+ },
+ "Axtria": {
+  "spec": "",
+  "ts": 1793611611.6842532
+ },
+ "BCG X": {
+  "spec": "",
+  "ts": 1793611588.2020726
+ },
+ "Bain & Company": {
+  "spec": "",
+  "ts": 1793611522.7808843
+ },
+ "Bain Capability Network": {
+  "spec": "",
+  "ts": 1793611585.6475997
+ },
+ "Beghou Consulting": {
+  "spec": "lever:beghouconsulting",
+  "ts": 1793611640.7585857
+ },
+ "BigBasket": {
+  "spec": "",
+  "ts": 1793611758.650219
+ },
+ "Biocon": {
+  "spec": "",
+  "ts": 1793611754.785566
+ },
+ "Blinkit": {
+  "spec": "",
+  "ts": 1793611502.4705179
+ },
+ "Boston Consulting Group": {
+  "spec": "",
+  "ts": 1793611510.7152615
+ },
+ "CRED": {
+  "spec": "lever:cred",
+  "ts": 1793611800.591038
+ },
+ "Cars24": {
+  "spec": "smartrecruiters:cars24",
+  "ts": 1793611796.0314975
+ },
+ "Chargebee": {
+  "spec": "",
+  "ts": 1793611880.3586729
+ },
+ "Cipla": {
+  "spec": "",
+  "ts": 1793611738.8520904
+ },
+ "Course5 Intelligence": {
+  "spec": "",
+  "ts": 1793611646.6405196
+ },
+ "Cult.fit": {
+  "spec": "",
+  "ts": 1793611782.5265143
+ },
+ "Darwinbox": {
+  "spec": "",
+  "ts": 1793611877.33926
+ },
+ "Definitive Healthcare": {
+  "spec": "",
+  "ts": 1793611643.0002074
+ },
+ "Delhivery": {
+  "spec": "",
+  "ts": 1793611760.6914358
+ },
+ "Deloitte India": {
+  "spec": "",
+  "ts": 1793611560.114795
+ },
+ "Dr. Reddy's Laboratories": {
+  "spec": "",
+  "ts": 1793611741.8828208
+ },
+ "Dream11": {
+  "spec": "",
+  "ts": 1793611763.1674914
+ },
+ "EVERSANA": {
+  "spec": "",
+  "ts": 1793611641.5373147
+ },
+ "EY-Parthenon": {
+  "spec": "",
+  "ts": 1793611557.9334462
+ },
+ "Eli Lilly": {
+  "spec": "",
+  "ts": 1793611718.2373533
+ },
+ "Eruditus": {
+  "spec": "",
+  "ts": 1793611771.287786
+ },
+ "Eternal": {
+  "spec": "",
+  "ts": 1793611503.0482414
+ },
+ "Evalueserve": {
+  "spec": "",
+  "ts": 1793611643.7142968
+ },
+ "Everest Group": {
+  "spec": "",
+  "ts": 1793611581.6019897
+ },
+ "Flipkart": {
+  "spec": "",
+  "ts": 1793611757.8729453
+ },
+ "Freshworks": {
+  "spec": "smartrecruiters:freshworks",
+  "ts": 1793611878.062404
+ },
+ "Games24x7": {
+  "spec": "",
+  "ts": 1793611764.1952755
+ },
+ "Glenmark": {
+  "spec": "",
+  "ts": 1793611745.6450555
+ },
+ "Grant Thornton Bharat": {
+  "spec": "",
+  "ts": 1793611565.540495
+ },
+ "Groww": {
+  "spec": "greenhouse:groww",
+  "ts": 1793611821.9451203
+ },
+ "HealthifyMe": {
+  "spec": "",
+  "ts": 1793611781.021244
+ },
+ "Honasa Consumer": {
+  "spec": "",
+  "ts": 1793611793.6863782
+ },
+ "Indegene": {
+  "spec": "",
+  "ts": 1793611629.1983175
+ },
+ "Infra.Market": {
+  "spec": "",
+  "ts": 1793611872.8260305
+ },
+ "Inizio": {
+  "spec": "greenhouse:inizio",
+  "ts": 1793611638.5955322
+ },
+ "Innovaccer": {
+  "spec": "",
+  "ts": 1793611780.3097
+ },
+ "Jar": {
+  "spec": "",
+  "ts": 1793611844.707374
+ },
+ "Jumbotail": {
+  "spec": "",
+  "ts": 1793611873.7603722
+ },
+ "KPMG India": {
+  "spec": "",
+  "ts": 1793611562.4568307
+ },
+ "Kearney": {
+  "spec": "",
+  "ts": 1793611523.6399076
+ },
+ "Kuku FM": {
+  "spec": "",
+  "ts": 1793611767.822525
+ },
+ "L.E.K. Consulting": {
+  "spec": "",
+  "ts": 1793611540.344014
+ },
+ "LeadSquared": {
+  "spec": "",
+  "ts": 1793611882.031996
+ },
+ "Lenskart": {
+  "spec": "",
+  "ts": 1793611785.9593534
+ },
+ "Licious": {
+  "spec": "",
+  "ts": 1793611789.7921872
+ },
+ "Lupin": {
+  "spec": "",
+  "ts": 1793611743.1883147
+ },
+ "MPL": {
+  "spec": "",
+  "ts": 1793611765.282266
+ },
+ "MSD": {
+  "spec": "",
+  "ts": 1793611734.1599982
+ },
+ "Mahindra Group": {
+  "spec": "",
+  "ts": 1793611596.4091005
+ },
+ "Mankind Pharma": {
+  "spec": "",
+  "ts": 1793611747.9005072
+ },
+ "McKinsey & Company": {
+  "spec": "",
+  "ts": 1793611508.330977
+ },
+ "Meesho": {
+  "spec": "lever:meesho",
+  "ts": 1793611783.33532
+ },
+ "Nexdigm": {
+  "spec": "",
+  "ts": 1793611578.7453334
+ },
+ "Nykaa": {
+  "spec": "",
+  "ts": 1793611786.7891533
+ },
+ "OfBusiness": {
+  "spec": "",
+  "ts": 1793611866.8544655
+ },
+ "Ola": {
+  "spec": "",
+  "ts": 1793611762.126038
+ },
+ "Oliver Wyman": {
+  "spec": "",
+  "ts": 1793611537.4528167
+ },
+ "PharmEasy": {
+  "spec": "",
+  "ts": 1793611773.5044441
+ },
+ "PhonePe": {
+  "spec": "",
+  "ts": 1793611842.3553667
+ },
+ "PhysicsWallah": {
+  "spec": "",
+  "ts": 1793611769.2671075
+ },
+ "Pocket FM": {
+  "spec": "lever:pocketfm",
+  "ts": 1793611766.0704772
+ },
+ "Porter": {
+  "spec": "",
+  "ts": 1793611759.2470448
+ },
+ "Postman": {
+  "spec": "",
+  "ts": 1793611879.615
+ },
+ "Practo": {
+  "spec": "",
+  "ts": 1793611775.7716725
+ },
+ "Praxis Global Alliance": {
+  "spec": "",
+  "ts": 1793611569.4191449
+ },
+ "Primus Partners": {
+  "spec": "",
+  "ts": 1793611577.8247862
+ },
+ "Pristyn Care": {
+  "spec": "",
+  "ts": 1793611777.5294416
+ },
+ "Putnam (Inizio)": {
+  "spec": "",
+  "ts": 1793611638.5163274
+ },
+ "PwC India": {
+  "spec": "",
+  "ts": 1793611555.0685205
+ },
+ "Rapido": {
+  "spec": "",
+  "ts": 1793611761.431881
+ },
+ "Razorpay": {
+  "spec": "",
+  "ts": 1793611797.2225475
+ },
+ "Rebel Foods": {
+  "spec": "",
+  "ts": 1793611791.1967337
+ },
+ "Redseer Strategy Consultants": {
+  "spec": "",
+  "ts": 1793611567.2835672
+ },
+ "Reliance Industries": {
+  "spec": "",
+  "ts": 1793611589.6889765
+ },
+ "Roland Berger": {
+  "spec": "",
+  "ts": 1793611525.3562422
+ },
+ "Sanofi": {
+  "spec": "",
+  "ts": 1793611665.2381594
+ },
+ "Shadowfax": {
+  "spec": "",
+  "ts": 1793611759.9659638
+ },
+ "ShareChat": {
+  "spec": "",
+  "ts": 1793611768.5676877
+ },
+ "Spinny": {
+  "spec": "",
+  "ts": 1793611795.2739513
+ },
+ "Strategy& (PwC)": {
+  "spec": "",
+  "ts": 1793611545.746117
+ },
+ "Sun Pharma": {
+  "spec": "",
+  "ts": 1793611738.0566287
+ },
+ "Swiggy": {
+  "spec": "smartrecruiters:swiggy",
+  "ts": 1793611756.4731698
+ },
+ "Syneos Health": {
+  "spec": "",
+  "ts": 1793611649.0666916
+ },
+ "Tata 1mg": {
+  "spec": "",
+  "ts": 1793611775.0557878
+ },
+ "Tata Sons": {
+  "spec": "",
+  "ts": 1793611591.1263957
+ },
+ "Technopak": {
+  "spec": "",
+  "ts": 1793611570.8733778
+ },
+ "Torrent Pharmaceuticals": {
+  "spec": "",
+  "ts": 1793611750.1298256
+ },
+ "Trinity Life Sciences": {
+  "spec": "",
+  "ts": 1793611640.258704
+ },
+ "Truemeds": {
+  "spec": "",
+  "ts": 1793611783.2423222
+ },
+ "Udaan": {
+  "spec": "",
+  "ts": 1793611865.2157707
+ },
+ "Unacademy": {
+  "spec": "smartrecruiters:unacademy",
+  "ts": 1793611772.3431616
+ },
+ "Urban Company": {
+  "spec": "",
+  "ts": 1793611789.082755
+ },
+ "Virohan": {
+  "spec": "",
+  "ts": 1793611504.899322
+ },
+ "WinZO": {
+  "spec": "",
+  "ts": 1793611765.987498
+ },
+ "ZS Associates": {
+  "spec": "",
+  "ts": 1793611501.703512
+ },
+ "Zepto": {
+  "spec": "",
+  "ts": 1793611755.486125
+ },
+ "Zerodha": {
+  "spec": "",
+  "ts": 1793611864.485144
+ },
+ "Zetwerk": {
+  "spec": "",
+  "ts": 1793611866.0294905
+ },
+ "Zinnov": {
+  "spec": "greenhouse:zinnov",
+  "ts": 1793611579.1146684
+ },
+ "Zupee": {
+  "spec": "",
+  "ts": 1793611503.9272513
+ },
+ "Zydus Lifesciences": {
+  "spec": "",
+  "ts": 1793611744.6309948
+ },
+ "boAt": {
+  "spec": "",
+  "ts": 1793611794.4588652
+ },
+ "slice": {
+  "spec": "",
+  "ts": 1793611845.5037713
+ },
+ "upGrad": {
+  "spec": "",
+  "ts": 1793611769.999425
+ }
+}
