@@ -215,7 +215,8 @@ def run(args) -> int:
         if good or ecfg.get("send_when_empty", False):
             subject, body = emailer.build(email_items, len(good), sheet.url, label)
             try:
-                emailer.send(subject, body)
+                if emailer.send(subject, body):
+                    log.info("Email sent: %s", subject)
             except Exception as e:  # never fail the run because of email
                 log.error("Email failed: %s", e)
     else:

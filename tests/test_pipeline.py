@@ -74,6 +74,7 @@ def test_slug_candidates():
     assert "zsassociates" in slug_candidates("ZS Associates")
     assert "razorpay" in slug_candidates("Razorpay")
     assert "lek" in slug_candidates("L.E.K. Consulting")
+    assert "eli" not in slug_candidates("Eli Lilly")       # no first-word-only slugs
 
 
 def test_keyword_fallback_and_tags():

@@ -187,7 +187,8 @@ def slug_candidates(name: str) -> list[str]:
     words = re.findall(r"[a-z0-9]+", base.lower())
     if not words:
         return []
-    cands = ["".join(words), "-".join(words), words[0]]
+    # Full-name slugs only: a first-word slug ("eli" for Eli Lilly) matched other companies' boards.
+    cands = ["".join(words), "-".join(words)]
     # drop generic suffixes ("consulting", "india", "group"...)
     generic = {"consulting", "india", "group", "company", "and", "the", "technologies", "labs",
                "energy", "consumer", "intelligence", "health", "pharma", "pharmaceuticals", "laboratories"}
@@ -201,17 +202,19 @@ def slug_candidates(name: str) -> list[str]:
     return out
 
 
+INDIA_RX = re.compile(r"india|mumbai|bengaluru|bangalore|gurugram|gurgaon|delhi|noida|hyderabad|pune|chennai",
+                      re.I)
+
+
 def probe(name: str) -> str:
-    """Return 'provider:slug' for the first ATS board that has at least one job, or '' if none."""
+    """Return 'provider:slug' for the first ATS board with at least one India-based job, or ''.
+
+    Requiring an India job guards against same-named companies elsewhere (e.g. a US 'Porter').
+    """
     for slug in slug_candidates(name):
         for prov in PROBE_PROVIDERS:
-            if prov == "smartrecruiters":
-                r = get(f"https://api.smartrecruiters.com/v1/companies/{slug}/postings", params={"limit": 1})
-                if r is not None and r.status_code == 200 and r.json().get("totalFound", 0) > 0:
-                    return f"{prov}:{slug}"
-                continue
-            jobs = PROVIDERS[prov](slug, name)
-            if jobs:
+            jobs = PROVIDERS[prov](slug, name)  # smartrecruiters() already filters to country=in
+            if jobs and any(INDIA_RX.search(j.location or "") for j in jobs):
                 return f"{prov}:{slug}"
     return ""
 
