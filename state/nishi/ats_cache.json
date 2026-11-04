@@ -1,1 +1,378 @@
-{}
+{
+ "Accenture": {
+  "spec": "",
+  "ts": 1793819270.3954904
+ },
+ "Aditya Birla Group": {
+  "spec": "",
+  "ts": 1793819329.8370194
+ },
+ "Adobe": {
+  "spec": "",
+  "ts": 1793819230.2261946
+ },
+ "Amazon": {
+  "spec": "",
+  "ts": 1793819228.257542
+ },
+ "American Express": {
+  "spec": "",
+  "ts": 1793819193.651063
+ },
+ "Axis Bank": {
+  "spec": "",
+  "ts": 1793819222.247296
+ },
+ "BNY": {
+  "spec": "",
+  "ts": 1793819202.7746532
+ },
+ "Bain Capability Network": {
+  "spec": "",
+  "ts": 1793819279.2060156
+ },
+ "Bajaj Finserv": {
+  "spec": "",
+  "ts": 1793819226.2221773
+ },
+ "Barclays": {
+  "spec": "",
+  "ts": 1793819195.9402187
+ },
+ "Bharti Airtel": {
+  "spec": "",
+  "ts": 1793819333.0682557
+ },
+ "BlackRock": {
+  "spec": "",
+  "ts": 1793819207.0444956
+ },
+ "Boston Consulting Group": {
+  "spec": "",
+  "ts": 1793819283.3885193
+ },
+ "CRED": {
+  "spec": "lever:cred",
+  "ts": 1793819398.503466
+ },
+ "Cisco": {
+  "spec": "",
+  "ts": 1793819253.7524993
+ },
+ "Citi Bank": {
+  "spec": "",
+  "ts": 1793819199.964365
+ },
+ "Coca-Cola": {
+  "spec": "",
+  "ts": 1793819367.6211927
+ },
+ "Darwinbox": {
+  "spec": "",
+  "ts": 1793819451.4394255
+ },
+ "Delhivery": {
+  "spec": "",
+  "ts": 1793819402.6612427
+ },
+ "Deloitte India": {
+  "spec": "",
+  "ts": 1793819257.6005561
+ },
+ "Deutsche Bank": {
+  "spec": "",
+  "ts": 1793819195.373202
+ },
+ "Diageo India": {
+  "spec": "",
+  "ts": 1793819375.0094209
+ },
+ "Dr. Reddy's Laboratories": {
+  "spec": "",
+  "ts": 1793819386.3020136
+ },
+ "Dream11": {
+  "spec": "",
+  "ts": 1793819447.8741977
+ },
+ "EXL": {
+  "spec": "",
+  "ts": 1793819276.9538312
+ },
+ "EY GDS": {
+  "spec": "",
+  "ts": 1793819258.909421
+ },
+ "Ericsson": {
+  "spec": "",
+  "ts": 1793819254.3473043
+ },
+ "Eternal": {
+  "spec": "",
+  "ts": 1793819392.6523268
+ },
+ "Fidelity International": {
+  "spec": "",
+  "ts": 1793819204.639146
+ },
+ "Flipkart": {
+  "spec": "",
+  "ts": 1793819388.2946215
+ },
+ "Freshworks": {
+  "spec": "smartrecruiters:freshworks",
+  "ts": 1793819450.1480277
+ },
+ "GE Vernova": {
+  "spec": "",
+  "ts": 1793819379.279077
+ },
+ "Gartner": {
+  "spec": "",
+  "ts": 1793819238.2316005
+ },
+ "Genpact": {
+  "spec": "",
+  "ts": 1793819270.9798183
+ },
+ "Goldman Sachs": {
+  "spec": "",
+  "ts": 1793819172.8382318
+ },
+ "Google": {
+  "spec": "",
+  "ts": 1793819226.908948
+ },
+ "Groww": {
+  "spec": "greenhouse:groww",
+  "ts": 1793819398.6674309
+ },
+ "HDFC Bank": {
+  "spec": "",
+  "ts": 1793819218.8553393
+ },
+ "HSBC": {
+  "spec": "",
+  "ts": 1793819197.0350933
+ },
+ "Hero MotoCorp": {
+  "spec": "",
+  "ts": 1793819360.8979735
+ },
+ "Hindustan Unilever": {
+  "spec": "",
+  "ts": 1793819362.3538954
+ },
+ "Honeywell": {
+  "spec": "",
+  "ts": 1793819377.8572273
+ },
+ "ICICI Bank": {
+  "spec": "",
+  "ts": 1793819220.1769493
+ },
+ "ITC": {
+  "spec": "",
+  "ts": 1793819363.5371902
+ },
+ "Info Edge": {
+  "spec": "",
+  "ts": 1793819429.079222
+ },
+ "JPMorgan Chase": {
+  "spec": "",
+  "ts": 1793819175.2338302
+ },
+ "KPMG India": {
+  "spec": "",
+  "ts": 1793819265.1346636
+ },
+ "Kotak Mahindra Bank": {
+  "spec": "",
+  "ts": 1793819224.0195386
+ },
+ "Lenskart": {
+  "spec": "",
+  "ts": 1793819395.4740915
+ },
+ "Lowe's": {
+  "spec": "",
+  "ts": 1793819236.8477736
+ },
+ "Macquarie Group": {
+  "spec": "",
+  "ts": 1793819215.9397707
+ },
+ "Mahindra Group": {
+  "spec": "",
+  "ts": 1793819331.8193045
+ },
+ "MakeMyTrip": {
+  "spec": "",
+  "ts": 1793819401.3943868
+ },
+ "Maruti Suzuki": {
+  "spec": "",
+  "ts": 1793819337.801141
+ },
+ "Mastercard": {
+  "spec": "",
+  "ts": 1793819208.6255448
+ },
+ "Max Healthcare": {
+  "spec": "",
+  "ts": 1793819387.663757
+ },
+ "McKinsey & Company": {
+  "spec": "",
+  "ts": 1793819281.3997378
+ },
+ "Meesho": {
+  "spec": "lever:meesho",
+  "ts": 1793819394.1023197
+ },
+ "Microsoft": {
+  "spec": "",
+  "ts": 1793819227.6223803
+ },
+ "Morgan Stanley": {
+  "spec": "",
+  "ts": 1793819192.4697306
+ },
+ "Nestle India": {
+  "spec": "",
+  "ts": 1793819365.35959
+ },
+ "Nokia": {
+  "spec": "",
+  "ts": 1793819255.0720546
+ },
+ "Nomura": {
+  "spec": "",
+  "ts": 1793819216.592271
+ },
+ "Nykaa": {
+  "spec": "",
+  "ts": 1793819394.8719893
+ },
+ "OYO": {
+  "spec": "",
+  "ts": 1793819401.9880207
+ },
+ "Ola Electric": {
+  "spec": "",
+  "ts": 1793819449.6416402
+ },
+ "Oracle India": {
+  "spec": "",
+  "ts": 1793819240.8673866
+ },
+ "PB Fintech": {
+  "spec": "",
+  "ts": 1793819400.7829258
+ },
+ "Paytm": {
+  "spec": "lever:paytm",
+  "ts": 1793819397.368274
+ },
+ "PepsiCo": {
+  "spec": "",
+  "ts": 1793819365.9681184
+ },
+ "PhonePe": {
+  "spec": "",
+  "ts": 1793819396.2227252
+ },
+ "Procter & Gamble": {
+  "spec": "",
+  "ts": 1793819373.1207461
+ },
+ "PwC India": {
+  "spec": "",
+  "ts": 1793819267.853742
+ },
+ "Razorpay": {
+  "spec": "",
+  "ts": 1793819398.103912
+ },
+ "Reliance Industries": {
+  "spec": "",
+  "ts": 1793819316.0288937
+ },
+ "Salesforce": {
+  "spec": "",
+  "ts": 1793819238.8375294
+ },
+ "Samsung": {
+  "spec": "",
+  "ts": 1793819255.6881819
+ },
+ "Schneider Electric": {
+  "spec": "",
+  "ts": 1793819377.2367585
+ },
+ "Shell India": {
+  "spec": "",
+  "ts": 1793819381.167912
+ },
+ "Siemens": {
+  "spec": "",
+  "ts": 1793819375.6761956
+ },
+ "Standard Chartered": {
+  "spec": "",
+  "ts": 1793819201.4142642
+ },
+ "Sun Pharma": {
+  "spec": "",
+  "ts": 1793819383.4056885
+ },
+ "Swiggy": {
+  "spec": "smartrecruiters:swiggy",
+  "ts": 1793819389.3060327
+ },
+ "Target Corporation": {
+  "spec": "",
+  "ts": 1793819233.480033
+ },
+ "Tata Group": {
+  "spec": "",
+  "ts": 1793819318.1419625
+ },
+ "Tesco": {
+  "spec": "",
+  "ts": 1793819237.4933128
+ },
+ "UBS": {
+  "spec": "",
+  "ts": 1793819202.2048893
+ },
+ "Uber": {
+  "spec": "",
+  "ts": 1793819230.557345
+ },
+ "Urban Company": {
+  "spec": "",
+  "ts": 1793819405.6014657
+ },
+ "Visa Inc": {
+  "spec": "",
+  "ts": 1793819210.0540564
+ },
+ "WNS": {
+  "spec": "",
+  "ts": 1793819277.6897595
+ },
+ "Walmart Global Tech": {
+  "spec": "",
+  "ts": 1793819231.8978686
+ },
+ "Wells Fargo": {
+  "spec": "",
+  "ts": 1793819198.4105308
+ },
+ "Zepto": {
+  "spec": "",
+  "ts": 1793819393.646072
+ }
+}
