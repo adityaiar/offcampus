@@ -2,10 +2,12 @@ name: Job Radar
 
 on:
   schedule:
-    # Twice daily: 07:43 IST and 17:47 IST (GitHub cron is in UTC; off-the-hour minutes avoid queue delays)
-    - cron: "13 2 * * *"
-    - cron: "17 12 * * *"
-  workflow_dispatch: {}   # "Run workflow" button for manual runs
+    # Twice daily: 07:30 IST and 17:30 IST (GitHub cron is in UTC: IST = UTC + 5:30).
+    # GitHub starts scheduled runs late when its runners are busy (we've seen ~7 hours), so for
+    # punctual runs also trigger "Run workflow" from an external scheduler (see README → Schedule).
+    - cron: "0 2 * * *"
+    - cron: "0 12 * * *"
+  workflow_dispatch: {}   # "Run workflow" button / API, for manual or external-scheduler runs
 
 permissions:
   contents: write         # to commit state/ (seen jobs + ATS cache)

@@ -5,7 +5,7 @@ Consulting**, and **Startups (Series B+)**. Each job gets a 0–10 fit score fro
 Results land in a styled **Google Sheet** and an **email digest**.
 
 ```
-GitHub Actions (07:43 & 17:47 IST)
+GitHub Actions (07:30 & 17:30 IST)
   ├─ Fetch    company ATS feeds (Greenhouse / Lever / Ashby / SmartRecruiters / Workday)
   │           + LinkedIn public job search + Adzuna + Google Jobs (SerpAPI)
   ├─ Filter   dedupe · already-seen · India/remote · posted ≤7 days · excluded titles
@@ -82,6 +82,25 @@ e.g. `claude-haiku-5-5`.
 ### 6. First run
 **Actions → Job Radar → Run workflow.** The first run builds and styles the sheet and scores the backlog,
 up to 250 jobs. After that it runs on its own twice a day.
+
+## Schedule (on-time runs)
+
+The workflow is scheduled for **07:30 and 17:30 IST**. GitHub's free scheduler is best-effort, though,
+and often starts runs hours late (we've seen ~7 h). For punctual runs, trigger the workflow from a free
+external scheduler as well:
+
+1. **GitHub token**: GitHub → Settings → Developer settings → Fine-grained personal access tokens →
+   *Generate new token*. Repository access: **Only `adityaiar/offcampus`**. Permissions: **Actions →
+   Read and write**. Set an expiry (e.g. 1 year) and copy the token.
+2. **cron-job.org** (free): create an account, then *Create cronjob*:
+   - URL: `https://api.github.com/repos/adityaiar/offcampus/actions/workflows/job-radar.yml/dispatches`
+   - Schedule: custom, **07:30 and 17:30**, time zone **Asia/Kolkata**
+   - Advanced → Request method **POST**; headers
+     `Authorization: Bearer <token>`, `Accept: application/vnd.github+json`,
+     `X-GitHub-Api-Version: 2022-11-28`; request body `{"ref":"main"}`
+3. Save, then click *Test run*. A new run should appear in the repo's Actions tab within seconds.
+
+If GitHub's own (late) scheduled run also fires, it just finds nothing new or only a few new jobs.
 
 ## Running locally
 
