@@ -21,6 +21,7 @@ log = logging.getLogger(__name__)
 PROBE_PROVIDERS = ["greenhouse", "lever", "ashby", "smartrecruiters"]
 REPROBE_DAYS = 14
 
+# Default Workday keyword searches; a profile can override with sources.workday_search_terms.
 WORKDAY_SEARCH_TERMS = ["strategy", "commercial", "consult", "incentive", "excellence",
                         "program", "operations", "business", "analytics", "transformation"]
 
@@ -117,7 +118,7 @@ def smartrecruiters(slug: str, company: str) -> list[Job] | None:
     return jobs
 
 
-def workday(spec: str, company: str) -> list[Job] | None:
+def workday(spec: str, company: str, terms: list[str] | None = None) -> list[Job] | None:
     """spec = '<host>/<tenant>/<site>', e.g. 'novartis.wd3.myworkdayjobs.com/novartis/Novartis_Careers'."""
     try:
         host, tenant, site = spec.split("/", 2)
@@ -126,7 +127,7 @@ def workday(spec: str, company: str) -> list[Job] | None:
         return None
     api = f"https://{host}/wday/cxs/{tenant}/{site}"
     seen, jobs, ok = set(), [], False
-    for term in WORKDAY_SEARCH_TERMS:
+    for term in terms or WORKDAY_SEARCH_TERMS:
         r = post_json(f"{api}/jobs", {"appliedFacets": {}, "limit": 20, "offset": 0,
                                        "searchText": f"{term} India"})
         if r is None or r.status_code != 200:
@@ -219,7 +220,7 @@ def probe(name: str) -> str:
     return ""
 
 
-def fetch_company(company: dict, cache: dict, log_entries: list) -> list[Job]:
+def fetch_company(company: dict, cache: dict, log_entries: list, workday_terms: list[str] | None = None) -> list[Job]:
     name = company["name"]
     spec = (company.get("ats") or "").strip()
     if not spec:
@@ -237,7 +238,7 @@ def fetch_company(company: dict, cache: dict, log_entries: list) -> list[Job]:
     if fn is None:
         log_entries.append(f"Unknown ATS '{prov}' for {name}")
         return []
-    jobs = fn(arg, name)
+    jobs = fn(arg, name, workday_terms) if prov == "workday" else fn(arg, name)
     if jobs is None:
         log_entries.append(f"⚠ {name}: {prov} feed not reachable ({arg})")
         if not company.get("ats"):

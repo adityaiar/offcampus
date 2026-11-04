@@ -67,6 +67,14 @@ def annotate(job: Job, keywords: dict) -> None:
             break
 
 
+def company_excluded(job: Job, settings: dict) -> str:
+    """Company names to always drop (e.g. the candidate's current employer). Whole-word match."""
+    for c in settings.get("exclude_companies") or []:
+        if word_match(c, job.company or ""):
+            return c
+    return ""
+
+
 def match_company(job: Job, companies: list[dict]) -> dict | None:
     """Match a job's company name (from LinkedIn/aggregators) against the company list."""
     jc = _norm(job.company)

@@ -8,20 +8,27 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from datetime import date
+
+from . import config
 from .models import Job
 
 log = logging.getLogger(__name__)
 
-BUCKETS = [("lifesciences", "🧬 Life-Science / Pharma Consulting", "#1E7A3C"),
-           ("consulting", "📈 Consulting / Strategy", "#1A4FA0"),
-           ("startup", "🚀 Startups", "#6A2FB0"),
-           ("none", "Other", "#666666")]
+
+def _short_date(iso: str) -> str:
+    try:
+        return date.fromisoformat(iso).strftime("%d %b")
+    except ValueError:
+        return iso
 
 
 def _card(j: Job, tag: str) -> str:
     e = html.escape
     tag_html = f'<span style="font-size:12px;color:#C2410C;font-weight:600">{e(tag)}</span><br>' if tag else ""
     meta = " · ".join(x for x in [j.location, j.experience, f"posted {j.posted}" if j.posted else ""] if x)
+    due = (f'<br><span style="font-size:12px;color:#B3261E;font-weight:600">Apply by {_short_date(j.deadline)}</span>'
+           if j.deadline else "")
     return f"""
     <tr><td style="padding:12px 14px;border-bottom:1px solid #EEF1F6">
       <table width="100%" cellpadding="0" cellspacing="0"><tr>
@@ -32,18 +39,21 @@ def _card(j: Job, tag: str) -> str:
           <a href="{e(j.url)}" style="font-size:15px;font-weight:700;color:#1F2A44;text-decoration:none">{e(j.title)}</a><br>
           <span style="font-size:13px;color:#333;font-weight:600">{e(j.company)}</span>
           <span style="font-size:12px;color:#777"> · {e(meta)}</span><br>
-          <span style="font-size:13px;color:#444">{e(j.fit_reason)}</span>
+          <span style="font-size:13px;color:#444">{e(j.fit_reason)}</span>{due}
         </td></tr></table>
     </td></tr>"""
 
 
-def build(jobs_with_tags: list[tuple[Job, str]], total_new: int, sheet_url: str, run_label: str) -> tuple[str, str]:
+def build(jobs_with_tags: list[tuple[Job, str]], total_new: int, sheet_url: str, run_label: str,
+          settings: dict) -> tuple[str, str]:
     high = sum(1 for j, _ in jobs_with_tags if j.score >= 8)
     subject = f"🔥 {high} high-fit + {total_new} new roles | Job Radar, {run_label}" if high else \
               f"{total_new} new roles | Job Radar, {run_label}"
     sections = []
-    for key, label, color in BUCKETS:
-        items = [(j, t) for j, t in jobs_with_tags if (j.bucket or "none") == key]
+    known = set(config.bucket_keys(settings))
+    for b in config.buckets(settings, with_other=True):
+        key, label, color = b["key"], b["email_label"], b["color"]
+        items = [(j, t) for j, t in jobs_with_tags if (j.bucket if j.bucket in known else "none") == key]
         if not items:
             continue
         rows = "".join(_card(j, t) for j, t in items)
@@ -56,7 +66,7 @@ def build(jobs_with_tags: list[tuple[Job, str]], total_new: int, sheet_url: str,
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#F4F6FA;padding:20px 0"><tr><td align="center">
     <table width="640" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:10px;overflow:hidden">
       <tr><td style="background:#1F2A44;padding:18px 20px;font-family:Arial,sans-serif;color:#fff">
-        <div style="font-size:20px;font-weight:700">🎯 Job Radar</div>
+        <div style="font-size:20px;font-weight:700">🎯 Job Radar · {html.escape(settings.get("display", {}).get("name", ""))}</div>
         <div style="font-size:12px;color:#AFC3E8">{html.escape(run_label)} · {total_new} new relevant roles · {high} high fit</div>
       </td></tr>
       {body}
@@ -70,9 +80,13 @@ def build(jobs_with_tags: list[tuple[Job, str]], total_new: int, sheet_url: str,
 
 def send(subject: str, html_doc: str) -> bool:
     user, pwd = os.getenv("GMAIL_ADDRESS"), os.getenv("GMAIL_APP_PASSWORD")
-    to = os.getenv("EMAIL_TO") or user
+    # Only the default profile may fall back to emailing the sender; anyone else needs their own EMAIL_TO.
+    to = os.getenv("EMAIL_TO") or (user if config.name() == config.DEFAULT_PROFILE else "")
     if not (user and pwd):
         log.warning("GMAIL_ADDRESS / GMAIL_APP_PASSWORD not set — skipping email")
+        return False
+    if not to:
+        log.warning("EMAIL_TO not set for profile '%s' — skipping email", config.name())
         return False
     msg = MIMEMultipart("alternative")
     msg["Subject"], msg["From"], msg["To"] = subject, f"Job Radar <{user}>", to

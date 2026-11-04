@@ -5,12 +5,18 @@ import json
 from datetime import date, timedelta
 from pathlib import Path
 
-STATE_DIR = Path(__file__).resolve().parent.parent / "state"
+from . import config
+
+STATE_DIR: Path | None = None   # override (tests); default is state/<profile>/
 KEEP_DAYS = 90
 
 
+def _dir() -> Path:
+    return STATE_DIR or (config.ROOT / "state" / config.name())
+
+
 def load(name: str) -> dict:
-    p = STATE_DIR / f"{name}.json"
+    p = _dir() / f"{name}.json"
     if p.exists():
         try:
             return json.loads(p.read_text())
@@ -20,8 +26,8 @@ def load(name: str) -> dict:
 
 
 def save(name: str, data: dict) -> None:
-    STATE_DIR.mkdir(exist_ok=True)
-    (STATE_DIR / f"{name}.json").write_text(json.dumps(data, indent=1, sort_keys=True))
+    _dir().mkdir(parents=True, exist_ok=True)
+    (_dir() / f"{name}.json").write_text(json.dumps(data, indent=1, sort_keys=True))
 
 
 def prune_seen(seen: dict) -> dict:

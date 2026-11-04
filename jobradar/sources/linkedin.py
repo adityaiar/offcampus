@@ -2,7 +2,7 @@
 
 Kept deliberately low-volume (a few dozen requests per run, with pauses). LinkedIn may rate-limit
 or block automated access at any time; when that happens this source just returns fewer jobs and
-the Run Log says so. Turn it off with `sources.linkedin: false` in config/settings.yaml.
+the Run Log says so. Turn it off with `sources.linkedin: false` in profiles/<name>/settings.yaml.
 """
 from __future__ import annotations
 

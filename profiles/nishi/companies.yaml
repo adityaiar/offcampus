@@ -1,0 +1,116 @@
+# Seed company list for Nishi (all with India presence). After the first run this list is copied to the
+# "🏢 Companies" tab of her Google Sheet, which becomes the source of truth — add/remove rows there.
+#
+# Fields
+#   name     : display name (also used as the LinkedIn search term)
+#   bucket   : finance | pmo | any   ("any" = good employer for both; the role decides the bucket)
+#   ats      : optional, see profiles/aditya/companies.yaml. Leave blank to auto-probe.
+#   tags     : optional — "dream" (always pinned to top), sector hints
+#
+# Her current employer (Infosys) is excluded in settings.yaml → exclude_companies.
+# Jobs from companies NOT on this list are still found through the role searches in settings.yaml.
+
+companies:
+  # ───────────── Banks / financial-services GCCs ─────────────
+  - {name: Goldman Sachs, bucket: any, tags: [gcc, bfsi]}
+  - {name: JPMorgan Chase, bucket: any, tags: [gcc, bfsi]}
+  - {name: Morgan Stanley, bucket: any, tags: [gcc, bfsi]}
+  - {name: American Express, bucket: any, tags: [gcc, bfsi]}
+  - {name: Deutsche Bank, bucket: any, tags: [gcc, bfsi]}
+  - {name: Barclays, bucket: any, tags: [gcc, bfsi]}
+  - {name: HSBC, bucket: any, tags: [gcc, bfsi]}
+  - {name: Wells Fargo, bucket: any, tags: [gcc, bfsi]}
+  - {name: Citi Bank, bucket: any, tags: [gcc, bfsi]}
+  - {name: Standard Chartered, bucket: any, tags: [gcc, bfsi]}
+  - {name: UBS, bucket: any, tags: [gcc, bfsi]}
+  - {name: BNY, bucket: any, tags: [gcc, bfsi]}
+  - {name: Fidelity International, bucket: any, tags: [gcc, bfsi]}
+  - {name: BlackRock, bucket: any, tags: [gcc, bfsi]}
+  - {name: Mastercard, bucket: any, tags: [gcc, payments]}
+  - {name: Visa Inc, bucket: any, tags: [gcc, payments]}
+  - {name: Macquarie Group, bucket: any, tags: [gcc, bfsi]}
+  - {name: Nomura, bucket: any, tags: [gcc, bfsi]}
+  - {name: HDFC Bank, bucket: any, tags: [bfsi]}
+  - {name: ICICI Bank, bucket: any, tags: [bfsi]}
+  - {name: Axis Bank, bucket: any, tags: [bfsi]}
+  - {name: Kotak Mahindra Bank, bucket: any, tags: [bfsi]}
+  - {name: Bajaj Finserv, bucket: any, tags: [bfsi]}
+
+  # ───────────── Tech / product companies ─────────────
+  - {name: Google, bucket: any, tags: [tech]}
+  - {name: Microsoft, bucket: any, tags: [tech]}
+  - {name: Amazon, bucket: any, tags: [tech]}
+  - {name: Adobe, bucket: any, tags: [tech]}
+  - {name: Uber, bucket: any, tags: [tech]}
+  - {name: Walmart Global Tech, bucket: any, tags: [gcc, retail]}
+  - {name: Target Corporation, bucket: any, tags: [gcc, retail]}
+  - {name: Lowe's, bucket: any, tags: [gcc, retail]}
+  - {name: Tesco, bucket: any, tags: [gcc, retail]}
+  - {name: Gartner, bucket: any, tags: [gcc]}
+  - {name: Salesforce, bucket: any, tags: [tech]}
+  - {name: Oracle India, bucket: any, tags: [tech]}
+  - {name: Cisco, bucket: any, tags: [tech]}
+  - {name: Ericsson, bucket: any, tags: [tech]}
+  - {name: Nokia, bucket: any, tags: [tech]}
+  - {name: Samsung, bucket: any, tags: [tech]}
+
+  # ───────────── Consulting / professional services (internal finance & PMO) ─────────────
+  - {name: Deloitte India, bucket: any, tags: [consulting]}
+  - {name: EY GDS, bucket: any, tags: [consulting]}
+  - {name: KPMG India, bucket: any, tags: [consulting]}
+  - {name: PwC India, bucket: any, tags: [consulting]}
+  - {name: Accenture, bucket: any, tags: [consulting]}
+  - {name: Genpact, bucket: any, tags: [consulting]}
+  - {name: EXL, bucket: any, tags: [consulting]}
+  - {name: WNS, bucket: any, tags: [consulting]}
+  - {name: Bain Capability Network, bucket: any, tags: [consulting]}
+  - {name: McKinsey & Company, bucket: any, tags: [consulting]}
+  - {name: Boston Consulting Group, bucket: any, tags: [consulting]}
+
+  # ───────────── Large Indian & global corporates ─────────────
+  - {name: Reliance Industries, bucket: any, tags: [corporate]}
+  - {name: Tata Group, bucket: any, tags: [corporate]}
+  - {name: Aditya Birla Group, bucket: any, tags: [corporate]}
+  - {name: Mahindra Group, bucket: any, tags: [corporate]}
+  - {name: Bharti Airtel, bucket: any, tags: [corporate, telecom]}
+  - {name: Maruti Suzuki, bucket: any, tags: [corporate, auto]}
+  - {name: Hero MotoCorp, bucket: any, tags: [corporate, auto]}
+  - {name: Hindustan Unilever, bucket: any, tags: [corporate, fmcg]}
+  - {name: ITC, bucket: any, tags: [corporate, fmcg]}
+  - {name: Nestle India, bucket: any, tags: [corporate, fmcg]}
+  - {name: PepsiCo, bucket: any, tags: [corporate, fmcg]}
+  - {name: Coca-Cola, bucket: any, tags: [corporate, fmcg]}
+  - {name: Procter & Gamble, bucket: any, tags: [corporate, fmcg]}
+  - {name: Diageo India, bucket: any, tags: [corporate, fmcg]}
+  - {name: Siemens, bucket: any, tags: [corporate, industrial]}
+  - {name: Schneider Electric, bucket: any, tags: [corporate, industrial]}
+  - {name: Honeywell, bucket: any, tags: [corporate, industrial]}
+  - {name: GE Vernova, bucket: any, tags: [corporate, industrial]}
+  - {name: Shell India, bucket: any, tags: [corporate, energy]}
+  - {name: Sun Pharma, bucket: any, tags: [corporate, pharma]}
+  - {name: Dr. Reddy's Laboratories, bucket: any, tags: [corporate, pharma]}
+  - {name: Max Healthcare, bucket: any, tags: [corporate, healthcare]}
+
+  # ───────────── New-age / later-stage startups ─────────────
+  - {name: Flipkart, bucket: any, tags: [ecommerce]}
+  - {name: Swiggy, bucket: any, tags: [quick-commerce]}
+  - {name: Eternal, bucket: any, tags: [quick-commerce]}
+  - {name: Zepto, bucket: any, tags: [quick-commerce]}
+  - {name: Meesho, bucket: any, tags: [ecommerce]}
+  - {name: Nykaa, bucket: any, tags: [d2c]}
+  - {name: Lenskart, bucket: any, tags: [d2c]}
+  - {name: PhonePe, bucket: any, tags: [fintech]}
+  - {name: Paytm, bucket: any, tags: [fintech]}
+  - {name: Razorpay, bucket: any, tags: [fintech]}
+  - {name: CRED, bucket: any, tags: [fintech]}
+  - {name: Groww, bucket: any, tags: [fintech]}
+  - {name: PB Fintech, bucket: any, tags: [fintech]}
+  - {name: MakeMyTrip, bucket: any, tags: [travel]}
+  - {name: OYO, bucket: any, tags: [travel]}
+  - {name: Delhivery, bucket: any, tags: [logistics]}
+  - {name: Urban Company, bucket: any, tags: [consumer]}
+  - {name: Info Edge, bucket: any, tags: [internet]}
+  - {name: Dream11, bucket: any, tags: [gaming]}
+  - {name: Ola Electric, bucket: any, tags: [mobility]}
+  - {name: Freshworks, bucket: any, tags: [saas]}
+  - {name: Darwinbox, bucket: any, tags: [saas]}

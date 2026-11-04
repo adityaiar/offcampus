@@ -4,74 +4,68 @@ from __future__ import annotations
 import json
 import logging
 import os
-from pathlib import Path
+from datetime import date
 
+from . import config, deadline
 from .models import Job
+from .textutil import word_match
 
 log = logging.getLogger(__name__)
-
-ROOT = Path(__file__).resolve().parent.parent
 
 # Models that accept the server-side refusal fallback parameter.
 FALLBACK_MODELS = {"claude-opus-5-5", "claude-opus-5", "claude-sonnet-5-5", "claude-fable-5-1"}
 
-RESULT_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "results": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "id": {"type": "integer"},
-                    "bucket": {"type": "string", "enum": ["consulting", "lifesciences", "startup", "none"]},
-                    "score": {"type": "integer", "description": "0-10 overall fit"},
-                    "experience_required": {"type": "string", "description": "e.g. '3-6 yrs', 'unclear'"},
-                    "india_eligible": {"type": "boolean"},
-                    "startup_stage": {"type": "string", "description": "e.g. 'Series C', 'Public', 'n/a', 'unknown'"},
-                    "immediate_joiner": {"type": "boolean", "description": "true if the posting needs someone to join well before Feb 2027"},
-                    "reason": {"type": "string", "description": "one line, <= 140 chars, why it fits or not"},
+def result_schema(bucket_keys: list[str]) -> dict:
+    return {
+        "type": "object",
+        "properties": {
+            "results": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer"},
+                        "bucket": {"type": "string", "enum": [*bucket_keys, "none"]},
+                        "score": {"type": "integer", "description": "0-10 overall fit"},
+                        "experience_required": {"type": "string", "description": "e.g. '3-6 yrs', 'unclear'"},
+                        "india_eligible": {"type": "boolean"},
+                        "startup_stage": {"type": "string", "description": "e.g. 'Series C', 'Public', 'n/a', 'unknown'"},
+                        "immediate_joiner": {"type": "boolean", "description": "true if the posting needs someone to join sooner than the candidate can (see instructions)"},
+                        "application_deadline": {"type": "string", "description": "last date to apply as YYYY-MM-DD, only if the posting states one; otherwise ''"},
+                        "reason": {"type": "string", "description": "one line, <= 140 chars, why it fits or not"},
+                    },
+                    "required": ["id", "bucket", "score", "experience_required", "india_eligible",
+                                 "startup_stage", "immediate_joiner", "application_deadline", "reason"],
+                    "additionalProperties": False,
                 },
-                "required": ["id", "bucket", "score", "experience_required", "india_eligible",
-                             "startup_stage", "immediate_joiner", "reason"],
-                "additionalProperties": False,
-            },
-        }
-    },
-    "required": ["results"],
-    "additionalProperties": False,
-}
+            }
+        },
+        "required": ["results"],
+        "additionalProperties": False,
+    }
 
-INSTRUCTIONS = """You screen job postings for one candidate (profile below) and score how good a fit each is.
+
+def instructions(settings: dict) -> str:
+    """Generic frame + the profile's buckets + the profile's scoring rubric (profiles/<name>/scoring.md)."""
+    bl = "\n".join(f"- {b['key']}: {' '.join(b['description'].split())}" for b in config.buckets(settings))
+    none = " ".join((settings.get("none_bucket") or "does not fit any bucket.").split())
+    return f"""You screen job postings for one candidate (profile below) and score how good a fit each is.
 
 Buckets (pick one):
-- consulting: management/strategy consulting firms (MBB, Tier-2, Big-4 strategy arms, boutiques) and
-  corporate/business strategy roles at large companies.
-- lifesciences: life-science / pharma consulting & analytics firms (ZS, IQVIA, Axtria, Indegene, Clarivate,
-  Putnam, Trinity, Beghou, EVERSANA, ...) and commercial / strategy roles at pharma companies or their India GCCs.
-- startup: VC-backed startups / new-age tech companies at roughly Series B or later (including post-IPO
-  new-age companies like Eternal, Swiggy, Nykaa). Any function that suits a strategy/ops/consulting profile.
-- none: does not fit any bucket (IT services, pure tech, non-commercial pharma, early-stage < Series B, etc.).
+{bl}
+- none: {none}
 
-Score 0-10, adding up:
-- Bucket fit (0-3): clearly inside one of the three buckets.
-- Experience fit (0-2): role suits ~3-6 years of experience (candidate has 4.6). Too junior (0-2 yrs, analyst
-  intern-like) or too senior (8+ yrs, Director/VP) → 0.
-- Domain match with the candidate's background (0-3): pharma commercial / SFE / incentive compensation highest;
-  then quick commerce / logistics / supply chain; then consumer internet growth, gaming, pricing, promotions,
-  loyalty; then ed-tech / health-tech; other sectors lower.
-- Function match (0-2): strategy, founder's office, chief of staff, BizOps, program management, growth,
-  transformation, consulting delivery. Sales quotas, IT implementation, engineering → 0.
+{config.read_text("scoring.md").strip()}
 Set india_eligible=false if the role is outside India and not remote-open-to-India; such roles get score <= 2.
 If bucket is "none", score <= 4.
-The candidate is available from 1 Feb 2027; flag immediate_joiner only if the posting explicitly needs an
-immediate / within-30-days joiner. Do not reduce the score for it.
+application_deadline: only when the posting explicitly states a last date to apply / closing date
+(use the posted date and today's date to work out a missing year). Never guess; otherwise return "".
 Hints from keyword rules are provided per job; treat them as signals, not verdicts.
 Return one result per job id, in any order. Keep reasons concrete (mention the matching experience)."""
 
 
 def _profile() -> str:
-    return (ROOT / "config" / "profile.md").read_text()
+    return config.read_text("profile.md")
 
 
 def _job_block(i: int, j: Job) -> str:
@@ -79,18 +73,30 @@ def _job_block(i: int, j: Job) -> str:
     if len(desc) > 3500:
         desc = desc[:3500] + " …"
     hints = "; ".join(j.hints) or "none"
-    listed = f"on target list as '{j.bucket_hint}'" if j.bucket_hint else "not on target list"
+    listed = ("not on target list" if not j.bucket_hint else
+              "on target list" if j.bucket_hint == "any" else f"on target list as '{j.bucket_hint}'")
     return (f"<job id=\"{i}\">\nTitle: {j.title}\nCompany: {j.company} ({listed})\n"
             f"Location: {j.location}\nPosted: {j.posted or 'unknown'}\nHints: {hints}\n"
             f"Description: {desc or '(not available — judge from title/company)'}\n</job>")
 
 
-def keyword_score(j: Job) -> None:
+def _keyword_bucket(j: Job, settings: dict) -> str:
+    keys = config.bucket_keys(settings)
+    if j.bucket_hint in keys:
+        return j.bucket_hint
+    for b in config.buckets(settings):
+        if any(word_match(k, j.title or "") for k in b["keywords"]):
+            return b["key"]
+    return "none"
+
+
+def keyword_score(j: Job, settings: dict) -> None:
     """Fallback when no API key is configured or a batch fails."""
     base = {"tier1": 7, "tier2": 6, "tier3": 5}.get(j.priority_tier, 4)
     if j.bucket_hint:
         base += 1
-    j.bucket = j.bucket or j.bucket_hint or "none"
+    j.bucket = j.bucket or _keyword_bucket(j, settings)
+    j.deadline = j.deadline or deadline.find_in_text(j.description)
     j.score = float(base)
     j.experience = j.experience or ""
     j.fit_reason = j.fit_reason or "Keyword-based score (AI scoring unavailable for this job)"
@@ -104,7 +110,7 @@ def score_jobs(jobs: list[Job], settings: dict) -> dict:
     if not os.getenv("ANTHROPIC_API_KEY"):
         log.warning("ANTHROPIC_API_KEY not set — using keyword scoring only")
         for j in jobs:
-            keyword_score(j)
+            keyword_score(j, settings)
         stats["scored_keyword"] = len(jobs)
         return stats
 
@@ -113,20 +119,22 @@ def score_jobs(jobs: list[Job], settings: dict) -> dict:
     cfg = settings["scoring"]
     model = os.getenv("CLAUDE_MODEL") or cfg["model"]
     client = anthropic.Anthropic(max_retries=4)
+    schema = result_schema(config.bucket_keys(settings))
+    today = date.today().isoformat()
     system = [
-        {"type": "text", "text": INSTRUCTIONS},
+        {"type": "text", "text": instructions(settings)},
         {"type": "text", "text": "<candidate_profile>\n" + _profile() + "\n</candidate_profile>",
          "cache_control": {"type": "ephemeral"}},
     ]
     bs = int(cfg.get("batch_size", 10))
     for start in range(0, len(jobs), bs):
         batch = jobs[start:start + bs]
-        prompt = "Score these jobs:\n\n" + "\n\n".join(_job_block(i, j) for i, j in enumerate(batch))
+        prompt = f"Today is {today}. Score these jobs:\n\n" + "\n\n".join(_job_block(i, j) for i, j in enumerate(batch))
         kwargs = dict(
             model=model, max_tokens=16000, system=system,
             messages=[{"role": "user", "content": prompt}],
             output_config={"effort": cfg.get("effort", "low"),
-                           "format": {"type": "json_schema", "schema": RESULT_SCHEMA}},
+                           "format": {"type": "json_schema", "schema": schema}},
         )
         try:
             if model in FALLBACK_MODELS:
@@ -173,10 +181,12 @@ def score_jobs(jobs: list[Job], settings: dict) -> dict:
             j.stage = r["startup_stage"]
             j.immediate_joiner = bool(r["immediate_joiner"])
             j.fit_reason = r["reason"]
+            j.deadline = deadline.normalize(r.get("application_deadline", "")) or \
+                deadline.find_in_text(j.description)
             stats["scored_ai"] += 1
         for i, j in enumerate(batch):
             if i not in got:
-                keyword_score(j)
+                keyword_score(j, settings)
                 stats["scored_keyword"] += 1
     return stats
 
@@ -194,4 +204,8 @@ def make_tag(j: Job, settings: dict) -> str:
         parts.append("🔁 Boomerang")
     if j.immediate_joiner:
         parts.append("⚡ Immediate joiner")
+    if deadline.is_closed(j.deadline):
+        parts.append("⌛ Closed")
+    elif deadline.closing_soon(j.deadline):
+        parts.append("⏳ Closing soon")
     return " · ".join(parts)

@@ -1,0 +1,129 @@
+# Job Radar settings for Nishi (PROFILE=nishi).
+
+display:
+  name: Nishi Kumari
+  tagline: Finance · PMO
+  availability: Notice period 45–60 days
+
+# Buckets: the AI puts each job in one of these (or "none" → "Other"). See profiles/aditya/settings.yaml
+# for what each field means.
+buckets:
+  - key: finance
+    label: Finance
+    email_label: 💰 Finance (FP&A / Business Finance)
+    color: "#0B6E4F"
+    bg: "#D7F2E6"
+    description: >-
+      finance roles in FP&A, financial planning, budgeting & forecasting, business finance, commercial /
+      strategic finance and finance business partnering, e.g. Finance Business Partner, Senior Analyst FP&A,
+      Financial Planning Specialist, FP&A Lead / Assistant Manager / Manager. At any reputable company.
+    keywords: [finance business partner, fp&a, fp & a, fp and a, financial planning, financial plan, finance planning,
+               planning & analysis, planning and analysis, business finance, commercial finance,
+               strategic finance, budgeting, forecasting, financial analyst, finance manager]
+  - key: pmo
+    label: PMO
+    email_label: 🗂 PMO (Programme / Portfolio Office)
+    color: "#9A4A00"
+    bg: "#FDE7D2"
+    description: >-
+      PMO roles: programme / portfolio / project management office, governance & reporting, planning &
+      operations cadence, strategy-planning-operations; e.g. PMO Analyst, PMO Lead, PMO Manager, Portfolio
+      Office Manager. At any reputable company.
+    keywords: [pmo, project management office, program management office, programme management office,
+               portfolio management office, governance, portfolio office]
+none_bucket: >-
+  not a finance-planning or PMO role (accounting operations, audit, tax, sales, credit/lending, wealth
+  management, engineering, IT implementation, etc.).
+
+# Her current employer: no internal / lateral moves for now.
+exclude_companies: [Infosys, EdgeVerve]
+default_company_bucket: any       # companies aren't tied to one bucket; the role decides
+
+candidate:
+  experience_years: 4
+  target_experience_range: [3, 6]
+
+locations:
+  # Pan-India. "india" matches most postings; the cities catch ones that name only the city.
+  include:
+    - india
+    - mumbai
+    - navi mumbai
+    - thane
+    - bengaluru
+    - bangalore
+    - delhi
+    - new delhi
+    - ncr
+    - gurugram
+    - gurgaon
+    - noida
+    - faridabad
+    - ghaziabad
+    - hyderabad
+    - pune
+    - chennai
+    - kolkata
+    - ahmedabad
+    - gandhinagar
+    - vadodara
+    - jaipur
+    - chandigarh
+    - mohali
+    - indore
+    - lucknow
+    - kochi
+    - thiruvananthapuram
+    - trivandrum
+    - coimbatore
+    - mysuru
+    - mysore
+    - bhubaneswar
+    - nagpur
+    - visakhapatnam
+    - goa
+  remote_terms: [remote, work from home, wfh, anywhere]
+
+discovery_queries:
+  - finance business partner
+  - senior analyst financial planning and analysis
+  - financial planning specialist
+  - senior analyst fp&a
+  - fp&a
+  - fp&a manager
+  - financial planning and analysis
+  - business finance
+  - commercial finance
+  - strategic finance
+  - pmo
+  - pmo analyst
+  - pmo manager
+  - program management office
+  - portfolio management office
+
+discovery_locations:
+  - India
+
+sources:
+  ats: true
+  linkedin: true
+  linkedin_company_slice: 30
+  adzuna: true
+  serpapi: true
+  serpapi_queries_per_run: 1
+  serpapi_every_n_runs: 2      # Google Jobs on every other run, so both profiles fit SerpAPI's 100/month free tier
+  serpapi_run_offset: 1
+  max_age_days: 7
+  workday_search_terms: [finance, fp&a, financial planning, business partner, pmo, planning, governance]
+
+scoring:
+  model: claude-opus-5-5
+  effort: low
+  batch_size: 10
+  max_jobs_per_run: 250
+  high_fit: 8
+  good_fit: 6
+
+email:
+  min_score: 7
+  max_items: 25
