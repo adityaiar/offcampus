@@ -1,4 +1,50 @@
-# General settings for the Job Radar.
+# Job Radar settings for Aditya (PROFILE=aditya).
+
+display:
+  name: Aditya Rai
+  tagline: Consulting · Life Sciences · Startups
+  availability: Available from 1 Feb 2027
+
+# Buckets: the AI puts each job in one of these (or "none" → "Other").
+#   key          : stored in the Companies tab's Bucket column
+#   label        : shown in the sheet (Bucket column, Dashboard)
+#   email_label  : section heading in the email digest (sections follow this order)
+#   color / bg   : text / fill colour
+#   description  : tells the AI what belongs in the bucket
+#   keywords     : title words used to pick a bucket when AI scoring is unavailable
+buckets:
+  - key: lifesciences
+    label: Life Sciences
+    email_label: 🧬 Life-Science / Pharma Consulting
+    color: "#1E7A3C"
+    bg: "#DDF2E3"
+    description: >-
+      life-science / pharma consulting & analytics firms (ZS, IQVIA, Axtria, Indegene, Clarivate,
+      Putnam, Trinity, Beghou, EVERSANA, ...) and commercial / strategy roles at pharma companies or their India GCCs.
+    keywords: [commercial excellence, sales force effectiveness, incentive compensation, pharma, life sciences]
+  - key: consulting
+    label: Consulting
+    email_label: 📈 Consulting / Strategy
+    color: "#1A4FA0"
+    bg: "#DCE8FB"
+    description: >-
+      management/strategy consulting firms (MBB, Tier-2, Big-4 strategy arms, boutiques) and
+      corporate/business strategy roles at large companies.
+    keywords: [consultant, consulting, engagement manager, corporate strategy]
+  - key: startup
+    label: Startup
+    email_label: 🚀 Startups
+    color: "#6A2FB0"
+    bg: "#EBDDFB"
+    description: >-
+      VC-backed startups / new-age tech companies at roughly Series B or later (including post-IPO
+      new-age companies like Eternal, Swiggy, Nykaa). Any function that suits a strategy/ops/consulting profile.
+    keywords: []
+none_bucket: does not fit any bucket (IT services, pure tech, non-commercial pharma, early-stage < Series B, etc.).
+
+# Companies whose jobs are always dropped (matched on the company name). E.g. a current employer.
+exclude_companies: []
+default_company_bucket: startup   # used when a row in the Companies tab has no Bucket
 
 candidate:
   available_from: "2027-02-01"

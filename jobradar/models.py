@@ -33,6 +33,7 @@ class Job:
     fit_reason: str = ""
     stage: str = ""
     immediate_joiner: bool = False
+    deadline: str = ""               # last date to apply (YYYY-MM-DD) when the posting states one
 
     @property
     def key(self) -> str:

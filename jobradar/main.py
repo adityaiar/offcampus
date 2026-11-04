@@ -16,19 +16,17 @@ from collections import Counter
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-import yaml
-
-from . import filters, scorer, state
+from . import config, deadline, filters, scorer, state
 from .models import Job
 from .sources import aggregators, ats, linkedin
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = config.ROOT
 IST = timezone(timedelta(hours=5, minutes=30))
 log = logging.getLogger("jobradar")
 
 
 def load_yaml(name):
-    return yaml.safe_load((ROOT / "config" / name).read_text())
+    return config.load_yaml(name)
 
 
 def run_label(now: datetime) -> str:
@@ -44,7 +42,7 @@ def fetch_all(companies, settings, ats_cache, warnings, run_no: int) -> tuple[li
 
     if src.get("ats", True):
         for c in companies:
-            got = ats.fetch_company(c, ats_cache, warnings)
+            got = ats.fetch_company(c, ats_cache, warnings, src.get("workday_search_terms"))
             if got:
                 counts["ats"] += len(got)
                 jobs += got
@@ -86,11 +84,12 @@ def fetch_all(companies, settings, ats_cache, warnings, run_no: int) -> tuple[li
             counts["adzuna"] += len(got)
             jobs += got
 
-    if src.get("serpapi", True):
+    every = max(1, int(src.get("serpapi_every_n_runs", 1)))   # share the free SerpAPI quota between profiles
+    if src.get("serpapi", True) and run_no % every == int(src.get("serpapi_run_offset", 0)) % every:
         qs = settings["discovery_queries"]
         k = int(src.get("serpapi_queries_per_run", 1))
         for i in range(k):
-            q = qs[(run_no * k + i) % len(qs)]
+            q = qs[((run_no // every) * k + i) % len(qs)]
             got = aggregators.google_jobs(q)
             if got is None:
                 break
@@ -122,10 +121,15 @@ def run(args) -> int:
     keywords = load_yaml("keywords.yaml")
     warnings: list[str] = []
 
+    log.info("Profile: %s (%s)", config.name(), settings.get("display", {}).get("name", ""))
+
     sheet = None
     if not args.dry_run:
         from .sheets import Sheet
-        sheet = Sheet()
+        if not os.getenv("SHEET_ID", "").strip():
+            raise SystemExit(f"SHEET_ID is empty for profile '{config.name()}' — add the GitHub secret "
+                             f"(see README → Adding a person).")
+        sheet = Sheet(settings)
         sheet.style()
         companies = sheet.companies(companies)
         keywords = sheet.keywords(keywords)
@@ -160,6 +164,8 @@ def run(args) -> int:
             stage["too old"] += 1
         elif filters.title_excluded(j, keywords):
             stage["excluded title"] += 1
+        elif filters.company_excluded(j, settings):
+            stage["excluded company"] += 1
         else:
             kept.append(j)
     log.info("Fetched %d, new after filters %d, dropped %s", len(raw), len(kept), dict(stage))
@@ -183,8 +189,9 @@ def run(args) -> int:
 
     kept.sort(key=sort_key)
     found_on = now.strftime("%Y-%m-%d %H:%M")
-    good = [j for j in kept if j.score >= sc["good_fit"] or "dream" in j.company_tags or
-            ("boomerang" in j.company_tags and j.score >= sc["good_fit"] - 1)]
+    good = [j for j in kept if not deadline.is_closed(j.deadline) and (
+            j.score >= sc["good_fit"] or "dream" in j.company_tags or
+            ("boomerang" in j.company_tags and j.score >= sc["good_fit"] - 1))]
     low = [j for j in kept if j not in good]
     tags = {j.key: scorer.make_tag(j, settings) for j in kept}
 
@@ -201,9 +208,8 @@ def run(args) -> int:
 
     from . import emailer
     if sheet:
-        from .sheets import Sheet
-        rows = [Sheet.job_row(j, found_on, tags[j.key]) for j in good]
-        low_rows = [Sheet.job_row(j, found_on, tags[j.key]) for j in low]
+        rows = [sheet.job_row(j, found_on, tags[j.key]) for j in good]
+        low_rows = [sheet.job_row(j, found_on, tags[j.key]) for j in low]
         sheet.add_jobs(rows, low_rows)
         sheet.write_new(rows, label)
         sheet.write_tracker()
@@ -213,7 +219,7 @@ def run(args) -> int:
                        f"{stats['input_tokens']}/{stats['output_tokens']}",
                        "; ".join(warnings)[:45000]])
         if good or ecfg.get("send_when_empty", False):
-            subject, body = emailer.build(email_items, len(good), sheet.url, label)
+            subject, body = emailer.build(email_items, len(good), sheet.url, label, settings)
             try:
                 if emailer.send(subject, body):
                     log.info("Email sent: %s", subject)
@@ -222,15 +228,15 @@ def run(args) -> int:
     else:
         out = ROOT / "output"
         out.mkdir(exist_ok=True)
-        subject, body = emailer.build(email_items, len(good), "https://docs.google.com/spreadsheets", label)
+        subject, body = emailer.build(email_items, len(good), "https://docs.google.com/spreadsheets", label, settings)
         (out / "preview.html").write_text(body)
         with open(out / "jobs.csv", "w", newline="") as f:
             w = csv.writer(f)
             w.writerow(["score", "tag", "bucket", "company", "title", "location", "experience",
-                        "posted", "reason", "url", "source"])
+                        "posted", "apply_by", "reason", "url", "source"])
             for j in kept:
                 w.writerow([j.score, tags[j.key], j.bucket, j.company, j.title, j.location,
-                            j.experience, j.posted, j.fit_reason, j.url, j.source])
+                            j.experience, j.posted, j.deadline, j.fit_reason, j.url, j.source])
         log.info("Dry run: wrote %s and %s (subject: %s)", out / "preview.html", out / "jobs.csv", subject)
 
     for w_ in warnings:
@@ -243,8 +249,11 @@ def run(args) -> int:
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--dry-run", action="store_true", help="no Google Sheet / email")
+    p.add_argument("--profile", help="profile folder under profiles/ (default: $PROFILE or 'aditya')")
     p.add_argument("--fixtures", help="load jobs from a JSON file instead of fetching")
     args = p.parse_args()
+    if args.profile:
+        os.environ["PROFILE"] = args.profile
     logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(message)s")
     raise SystemExit(run(args))
 

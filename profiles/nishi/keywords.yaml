@@ -1,0 +1,137 @@
+# Keyword rules for Nishi. Matching is case-insensitive on the job TITLE.
+# After the first run these are copied into the "🔑 Keywords" tab of her Google Sheet, which then becomes
+# the source of truth — edit them there.
+
+priority:
+  tier1:   # 🔥 +1.0 to the AI score
+    - finance business partner
+    - business finance partner
+    - financial planning specialist
+    - financial planning & analysis
+    - financial planning and analysis
+    - fp&a
+    - fp & a
+    - fpna
+    - fp and a
+    - financial plan & analysis
+    - financial plan and analysis
+    - finance planning & analysis
+    - finance planning and analysis
+    - business finance
+    - pmo
+    - project management office
+    - program management office
+    - programme management office
+    - portfolio management office
+  tier2:   # ⭐ +0.5
+    - financial planning
+    - commercial finance
+    - strategic finance
+    - finance strategy
+    - revenue planning
+    - budgeting
+    - forecasting
+    - financial analyst
+    - finance analyst
+    - finance manager
+    - planning and analysis
+    - performance management
+    - management reporting
+    - portfolio office
+    - strategy planning
+    - planning and operations
+    - finance transformation
+  tier3:   # ✓ +0.25
+    - program manager
+    - programme manager
+    - project manager
+    - business analyst
+    - reporting analyst
+    - mis
+    - business operations
+
+# Always dropped before scoring (title match).
+exclude_title:
+  - intern
+  - internship
+  - trainee
+  - fresher
+  - apprentice
+  - director
+  - vice president
+  - vp
+  - avp
+  - head of
+  - principal
+  - cfo
+  - chief financial officer
+  - sap
+  - oracle
+  - fico
+  - erp
+  - workday consultant
+  - implementation consultant
+  - functional consultant
+  - technical consultant
+  - software engineer
+  - software developer
+  - developer
+  - data engineer
+  - devops
+  - sde
+  - qa engineer
+  - accounts payable
+  - accounts receivable
+  - general ledger
+  - record to report
+  - r2r
+  - procure to pay
+  - p2p
+  - order to cash
+  - o2c
+  - payroll
+  - accountant
+  - bookkeeper
+  - tax
+  - gst
+  - statutory
+  - audit
+  - auditor
+  - collections
+  - credit analyst
+  - credit manager
+  - underwriter
+  - loan officer
+  - relationship manager
+  - wealth manager
+  - insurance advisor
+  - sales executive
+  - telesales
+  - tele sales
+  - telecaller
+  - inside sales
+  - field sales
+  - recruiter
+  - talent acquisition
+  - customer support
+  - customer service
+
+# Ranked lower (−1.0) but kept.
+deprioritise_title:
+  - data analyst
+  - business development
+  - sales manager
+  - account manager
+  - key account manager
+  - investment banking
+  - equity research
+  - treasury
+  - accounts
+  - financial controller
+
+# Experience phrases in the description that suggest too junior / too senior (hint to the AI, not a drop).
+exclude_experience_regex:
+  - '\b(0|1)\s*(-|–|to)\s*(1|2)\s*\+?\s*(years|yrs)'               # 0-2 / 1-2 years
+  - '\b(9|1[0-9]|2[0-9])\s*\+\s*(years|yrs)'                       # 9+ / 12+ years
+  - '\b(8|9|1[0-9])\s*(-|–|to)\s*(1[0-9]|2[0-9])\s*(years|yrs)'    # 8-12 / 10-15 years
+  - '\b(minimum|at least|min\.?)\s+(of\s+)?(9|1[0-9])\s*\+?\s*(years|yrs)'
