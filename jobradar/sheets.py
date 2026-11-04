@@ -7,8 +7,19 @@ import os
 import re
 
 import gspread
+from http import HTTPStatus
+from gspread.http_client import BackOffHTTPClient
 
 from .models import Job
+
+
+class RetryingHTTPClient(BackOffHTTPClient):
+    """Retry Google's transient errors (408, 429, 5xx) with backoff: 2s, 4s, … up to 64s (~2 min total)."""
+    _HTTP_ERROR_CODES = [
+        HTTPStatus.REQUEST_TIMEOUT, HTTPStatus.TOO_MANY_REQUESTS, HTTPStatus.INTERNAL_SERVER_ERROR,
+        HTTPStatus.BAD_GATEWAY, HTTPStatus.SERVICE_UNAVAILABLE, HTTPStatus.GATEWAY_TIMEOUT,
+    ]
+    _MAX_BACKOFF = 64
 
 log = logging.getLogger(__name__)
 
@@ -65,7 +76,7 @@ def esc(v):
 class Sheet:
     def __init__(self):
         creds = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT_JSON"])
-        self.gc = gspread.service_account_from_dict(creds)
+        self.gc = gspread.service_account_from_dict(creds, http_client=RetryingHTTPClient)
         key = sheet_key(os.environ["SHEET_ID"])
         try:
             self.sh = self.gc.open_by_key(key)
